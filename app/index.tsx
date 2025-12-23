@@ -1,11 +1,13 @@
 import { View, Text, ScrollView, Pressable, Linking } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
-import { Zap, Activity, Users, Apple, MapPin, Phone, Instagram, Facebook, MessageCircle } from 'lucide-react-native';
+import { MapPin, Phone, Instagram, Facebook, MessageCircle } from 'lucide-react-native';
 import Navbar from '../components/Navbar';
 // import Hero from '../components/Hero';
 import { AnimatedHero } from '../components/ui/animated-hero';
+import WhyReelRepCarousel from '../components/ui/WhyReelRepCarousel';
 import Testimonials from '../components/Testimonials';
 import Schedule from '../components/Schedule';
+import PricingSection from '../components/PricingSection';
 
 export default function LandingPage() {
     const openWhatsApp = () => {
@@ -61,59 +63,7 @@ export default function LandingPage() {
                                 למה Reel Rep?
                             </Text>
 
-                            <View className="flex-col md:flex-row md:flex-wrap gap-6 lg:gap-8">
-                                {/* Benefit 1 */}
-                                <View className="flex-1 md:min-w-[45%] lg:min-w-[22%] bg-backgroundLight p-6 rounded-xl border border-pink/20">
-                                    <View className="bg-pink/10 w-14 h-14 rounded-full items-center justify-center mb-4">
-                                        <Zap size={28} color="#D81B60" />
-                                    </View>
-                                    <Text className="text-white text-xl font-bold mb-3 writing-direction-rtl">
-                                        כוח פונקציונלי
-                                    </Text>
-                                    <Text className="text-textGray leading-relaxed writing-direction-rtl">
-                                        גוף שעובד בשבילך ביומיום, לא רק יפה במראה.
-                                    </Text>
-                                </View>
-
-                                {/* Benefit 2 */}
-                                <View className="flex-1 md:min-w-[45%] lg:min-w-[22%] bg-backgroundLight p-6 rounded-xl border border-pink/20">
-                                    <View className="bg-pink/10 w-14 h-14 rounded-full items-center justify-center mb-4">
-                                        <Activity size={28} color="#D81B60" />
-                                    </View>
-                                    <Text className="text-white text-xl font-bold mb-3 writing-direction-rtl">
-                                        תנועה וגמישות
-                                    </Text>
-                                    <Text className="text-textGray leading-relaxed writing-direction-rtl">
-                                        שיפור טווחי תנועה ומניעת פציעות.
-                                    </Text>
-                                </View>
-
-                                {/* Benefit 3 */}
-                                <View className="flex-1 md:min-w-[45%] lg:min-w-[22%] bg-backgroundLight p-6 rounded-xl border border-pink/20">
-                                    <View className="bg-pink/10 w-14 h-14 rounded-full items-center justify-center mb-4">
-                                        <Users size={28} color="#D81B60" />
-                                    </View>
-                                    <Text className="text-white text-xl font-bold mb-3 writing-direction-rtl">
-                                        יחס אישי
-                                    </Text>
-                                    <Text className="text-textGray leading-relaxed writing-direction-rtl">
-                                        עד 8 מתאמנים בקבוצה. אני רואה כל אחד ואחת מכם.
-                                    </Text>
-                                </View>
-
-                                {/* Benefit 4 */}
-                                <View className="flex-1 md:min-w-[45%] lg:min-w-[22%] bg-backgroundLight p-6 rounded-xl border border-pink/20">
-                                    <View className="bg-pink/10 w-14 h-14 rounded-full items-center justify-center mb-4">
-                                        <Apple size={28} color="#D81B60" />
-                                    </View>
-                                    <Text className="text-white text-xl font-bold mb-3 writing-direction-rtl">
-                                        מעטפת תזונתית
-                                    </Text>
-                                    <Text className="text-textGray leading-relaxed writing-direction-rtl">
-                                        הכוונה לתזונה תומכת אימונים.
-                                    </Text>
-                                </View>
-                            </View>
+                            <WhyReelRepCarousel />
                         </View>
                     </View>
 
@@ -135,6 +85,9 @@ export default function LandingPage() {
 
                     {/* Schedule */}
                     <Schedule />
+
+                    {/* Pricing Section */}
+                    <PricingSection />
 
                     {/* The Offer */}
                     <View className="bg-background px-4 md:px-8 lg:px-12 py-20">
