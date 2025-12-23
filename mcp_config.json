@@ -1,0 +1,17 @@
+{
+    "mcpServers": {
+        "figma": {
+            "command": "npx",
+            "args": [
+                "mcp-remote",
+                "http://127.0.0.1:3845/mcp"
+            ]
+        },
+        "browsermcp": {
+            "command": "npx",
+            "args": [
+                "@browsermcp/mcp@latest"
+            ]
+        }
+    }
+}
