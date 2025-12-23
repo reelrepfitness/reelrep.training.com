@@ -98,11 +98,22 @@ function FeatureCard({ feature }: { feature: Feature }) {
 
     return (
         <View
-            className="w-full md:w-1/2 lg:w-1/3 relative border-r border-b border-white/10"
+            className="w-full md:w-1/2 lg:w-1/3 relative border-r border-b border-white/20"
             style={{
                 minHeight: isMobile ? 100 : 200,
+                backgroundColor: 'rgba(255, 255, 255, 0.05)', // Foggy transparent background
             }}
         >
+            {/* Glassmorphism Blur Layer */}
+            <View
+                className="absolute inset-0"
+                style={{
+                    backgroundColor: 'rgba(255, 255, 255, 0.03)',
+                    borderWidth: 1,
+                    borderColor: 'rgba(255, 255, 255, 0.1)',
+                }}
+            />
+
             {/* Background Pattern */}
             <View className="absolute inset-0 overflow-hidden opacity-10">
                 <GridPattern />

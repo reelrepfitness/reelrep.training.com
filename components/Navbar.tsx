@@ -9,11 +9,11 @@ export default function Navbar() {
     const isMedium = width >= 768 && width < 1024;  // Tablet
     const isLarge = width >= 1024;  // Desktop
 
-    // Logo size - MUCH BIGGER!
-    const logoSize = isSmall ? 100 : isMedium ? 90 : 80;
+    // Logo size - smaller and refined
+    const logoSize = isSmall ? 60 : isMedium ? 55 : 50;
 
-    // Notch padding
-    const topPadding = isSmall ? 44 : 20;
+    // Notch padding - extra top space for iPhone dynamic island
+    const topPadding = isSmall ? 56 : 28;
     const bottomPadding = isSmall ? 12 : 10;
 
     return (

@@ -4,6 +4,8 @@ import { MapPin, Phone, Instagram, Facebook, MessageCircle } from 'lucide-react-
 import Navbar from '../components/Navbar';
 // import Hero from '../components/Hero';
 import { AnimatedHero } from '../components/ui/animated-hero';
+import BackgroundGradientAnimation from '../components/ui/background-gradient-animation';
+import FounderBio from '../components/FounderBio';
 import WhyReelRepCarousel from '../components/ui/WhyReelRepCarousel';
 import Testimonials from '../components/Testimonials';
 import Schedule from '../components/Schedule';
@@ -21,40 +23,19 @@ export default function LandingPage() {
             <Navbar />
 
             <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
-                {/* Hero Section */}
-                <AnimatedHero />
+                {/* Shared Animated Gradient Background - Spans Hero + FounderBio */}
+                <View className="flex-shrink-0">
+                    <BackgroundGradientAnimation theme="pink">
+                        {/* Hero Section */}
+                        <AnimatedHero />
+
+                        {/* Founder Bio - Ivan's Story (shares same animated background) */}
+                        <FounderBio onContactPress={openWhatsApp} />
+                    </BackgroundGradientAnimation>
+                </View>
 
                 {/* Content Container (for remaining sections) */}
                 <View className="relative">
-
-                    {/* About Section */}
-                    <View className="bg-backgroundLight px-4 md:px-8 lg:px-12 py-20">
-                        <View className="max-w-7xl mx-auto w-full">
-                            <View className="flex-col md:flex-row gap-8 lg:gap-16 items-center">
-                                {/* Trainer Image */}
-                                <View className="w-full md:w-1/2">
-                                    <View className="bg-white/5 aspect-square rounded-2xl overflow-hidden">
-                                        {/* Placeholder for Trainer_Photo.png */}
-                                        <View className="w-full h-full items-center justify-center">
-                                            <Text className="text-white/30 text-lg">Trainer Photo</Text>
-                                        </View>
-                                    </View>
-                                </View>
-
-                                {/* Bio Text */}
-                                <View className="w-full md:w-1/2 writing-direction-rtl">
-                                    <Text className="text-pink text-xl font-bold mb-4">
-                                        נעים מאוד, איוון.
-                                    </Text>
-
-                                    <Text className="text-textGray text-base leading-relaxed">
-                                        אני מגיע מעולם פיתוח הגוף (מקום שלישי מר ישראל לשנת 2017), אבל הגישה שלי היום שונה. אחרי שעברתי פריצת דיסק, הבנתי שהכוח האמיתי לא נמדד רק במשקל על המוט או בכמה גדולה היד הקדמית, אלא ביכולת תנועה, גמישות ושליטה מוחלטת בגוף.{'\n\n'}
-                                        היום אני חזק יותר ממה שהייתי לפני הפציעה - בזכות עבודה חכמה. בסטודיו שלי, Room Number One זה טכניקה. קודם כל לומדים לזוז נכון, ורק אז מעמיסים. אני כאן כדי לבנות אתכם חזקים, בריאים ומוכנים לכל אתגר.
-                                    </Text>
-                                </View>
-                            </View>
-                        </View>
-                    </View>
 
                     {/* Method & Benefits */}
                     <View className="bg-background px-4 md:px-8 lg:px-12 py-20">

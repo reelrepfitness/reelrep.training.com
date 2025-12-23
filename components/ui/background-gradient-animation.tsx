@@ -236,9 +236,9 @@ export function BackgroundGradientAnimation({
 
 const styles = StyleSheet.create({
     container: {
-        width: '100%',
+        alignSelf: 'stretch',
         position: 'relative',
-        overflow: 'hidden',
+        // overflow: 'hidden', // REMOVED - was cropping gradient blobs at section boundaries
     },
     background: {
         ...StyleSheet.absoluteFillObject,
@@ -248,8 +248,6 @@ const styles = StyleSheet.create({
         opacity: 0.8,
     },
     contentLayer: {
-        width: '100%',
-        height: '100%',
         zIndex: 10,
     },
 });
