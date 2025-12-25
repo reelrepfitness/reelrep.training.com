@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { View, Text as RNText, useWindowDimensions } from 'react-native';
+import { View, Text as RNText, useWindowDimensions, Platform } from 'react-native';
 import Animated, {
     useSharedValue,
     useAnimatedStyle,
@@ -113,7 +113,7 @@ export function TypewriterEffect({
                         textAlign: 'center',
                         marginBottom: 16,
                         writingDirection: 'rtl',
-                        fontFamily: 'Shorai Sans',
+                        fontFamily: Platform.OS === 'web' ? 'Heebo, Inter, sans-serif' : 'Shorai Sans',
                     }}
                 >
                     {staticText}
@@ -133,7 +133,7 @@ export function TypewriterEffect({
                                 fontWeight: '900',
                                 color: item.className?.includes('pink') ? '#D81B60' : '#FFFFFF',
                                 writingDirection: 'rtl',
-                                fontFamily: 'Shorai Sans',
+                                fontFamily: Platform.OS === 'web' ? 'Heebo, Inter, sans-serif' : 'Shorai Sans',
                             }}
                         >
                             {item.char}

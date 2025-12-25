@@ -16,7 +16,8 @@ module.exports = {
         textGray: '#CCCCCC',
       },
       fontFamily: {
-        // Add custom fonts here if needed
+        sans: ['Heebo', 'Inter', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+        'shorai': ['Heebo', 'Inter', '-apple-system', 'sans-serif'], // Shorai Sans alternative for web
       },
     },
   },

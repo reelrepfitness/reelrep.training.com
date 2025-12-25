@@ -89,7 +89,7 @@ export default function FounderBio({
                         style={{
                             position: 'relative',
                             width: '100%',
-                            height: isMobile ? 550 : isTablet ? 580 : 620,
+                            height: isMobile ? 550 : isTablet ? 480 : 450, // Reduced desktop height
                             overflow: 'visible', // Prevent clipping
                         }}
                     >
@@ -99,7 +99,7 @@ export default function FounderBio({
                                 position: 'absolute',
                                 right: 0,
                                 top: 0,
-                                width: isMobile ? '90%' : '70%',
+                                width: isMobile ? '90%' : isTablet ? '65%' : '55%', // Narrower on desktop
                                 height: '100%',
                                 borderRadius: 20,
                                 overflow: 'hidden',
@@ -157,7 +157,7 @@ export default function FounderBio({
                                 shadowOpacity: 0.3,
                                 shadowRadius: 20,
                                 elevation: 15,
-                                width: isMobile ? '70%' : '50%',
+                                width: isMobile ? '70%' : isTablet ? '50%' : '45%', // Smaller on desktop
                                 zIndex: 10,
                             }}
                         >

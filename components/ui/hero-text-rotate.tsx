@@ -64,9 +64,9 @@ export function HeroTextRotate({
         return '#FFFFFF'; // Default white
     };
 
-    // Shared font family
+    // Shared font family - Heebo for web (supports Hebrew), Shorai Sans for native
     const fontFamily = Platform.OS === 'web'
-        ? '"Shorai Sans", "Arial Black", "Helvetica Neue", sans-serif'
+        ? 'Heebo, Inter, -apple-system, BlinkMacSystemFont, sans-serif'
         : 'Shorai Sans';
 
     // Static text style
