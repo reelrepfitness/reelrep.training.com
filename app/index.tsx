@@ -42,7 +42,7 @@ export default function LandingPage() {
                 >
                     <BackgroundGradientAnimation theme="pink">
                         {/* Hero Section */}
-                        <AnimatedHero />
+                        <AnimatedHero onSchedulePress={() => setShowLeadForm(true)} />
 
                         {/* Founder Bio - Ivan's Story (shares same animated background) */}
                         <FounderBio onContactPress={openWhatsApp} />

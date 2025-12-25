@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { View, Text, useWindowDimensions, Platform, Linking, Pressable } from "react-native";
 import { Image } from 'expo-image';
-import { MoveRight, PhoneCall } from "lucide-react-native";
+import { PhoneCall } from "lucide-react-native";
 import { Button } from "@/components/ui/button";
 import HeroTextRotate from "@/components/ui/hero-text-rotate";
 import TypewriterEffect from "@/components/ui/typewriter-effect";
@@ -14,7 +14,11 @@ import Animated, {
 } from 'react-native-reanimated';
 
 
-function AnimatedHero() {
+interface AnimatedHeroProps {
+    onSchedulePress?: () => void;
+}
+
+function AnimatedHero({ onSchedulePress }: AnimatedHeroProps) {
     const { width, height } = useWindowDimensions();
     const isDesktop = width >= 768; // md breakpoint
 
@@ -77,10 +81,9 @@ function AnimatedHero() {
                             {/* Primary Button - Schedule Training */}
                             <Button
                                 size="lg"
-                                style={{ gap: 8 }}
+                                onPress={onSchedulePress}
                             >
                                 <Text className="text-white font-medium">לקביעת אימון</Text>
-                                <MoveRight size={16} color="#FFF" />
                             </Button>
 
                             {/* Secondary Button - Contact */}
