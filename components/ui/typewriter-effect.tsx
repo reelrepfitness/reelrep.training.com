@@ -106,8 +106,12 @@ export function TypewriterEffect({
             {/* Static Text */}
             {staticText && (
                 <RNText
-                    className="text-gray-400 text-base md:text-xl mb-4 text-center"
                     style={{
+                        fontSize: 20,
+                        fontWeight: '600',
+                        color: '#9CA3AF',
+                        textAlign: 'center',
+                        marginBottom: 16,
                         writingDirection: 'rtl',
                         fontFamily: 'Shorai Sans',
                     }}
@@ -124,8 +128,10 @@ export function TypewriterEffect({
                         <Animated.Text
                             key={`char-${index}`}
                             entering={FadeIn.delay(index * 80).duration(200)}
-                            className={`text-3xl md:text-5xl lg:text-6xl font-bold ${item.className || 'text-white'}`}
                             style={{
+                                fontSize: 34,
+                                fontWeight: '900',
+                                color: item.className?.includes('pink') ? '#D81B60' : '#FFFFFF',
                                 writingDirection: 'rtl',
                                 fontFamily: 'Shorai Sans',
                             }}

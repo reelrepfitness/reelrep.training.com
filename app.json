@@ -1,13 +1,13 @@
 {
   "expo": {
     "name": "Reel Rep.Training",
-    "slug": "reelrep-training",
+    "slug": "reelrepcom",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "scheme": "reelrep",
     "userInterfaceStyle": "dark",
-    "newArchEnabled": true,
+    "newArchEnabled": false,
     "splash": {
       "image": "./assets/splash-icon.png",
       "resizeMode": "contain",
@@ -32,6 +32,13 @@
     },
     "plugins": [
       "expo-router"
-    ]
+    ],
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "080474ff-7e8d-4b4e-9ad6-ed2c7a5a847b"
+      }
+    },
+    "owner": "ivanzaits"
   }
 }

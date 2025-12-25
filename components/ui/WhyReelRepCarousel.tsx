@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
-import { View, Text, useWindowDimensions } from 'react-native';
+import { View, Text, useWindowDimensions, Platform } from 'react-native';
 import Animated, {
     useSharedValue,
     useAnimatedStyle,
@@ -14,6 +14,7 @@ import Animated, {
     FadeOut,
 } from 'react-native-reanimated';
 import { LinearGradient } from 'expo-linear-gradient';
+import { BlurView } from 'expo-blur';
 import { Award, Trophy, GraduationCap, Users, ShieldCheck, Zap } from 'lucide-react-native';
 
 // --- Types ---
@@ -28,17 +29,17 @@ type Feature = {
 // --- Data ---
 const RAW_FEATURES: Feature[] = [
     { id: 0, title: '10 שנות ניסיון', icon: Award, desc: 'ניסיון מוכח ועשיר בתחום האימון והכושר.' },
-    { id: 1, title: 'מר ישראל', icon: Trophy, desc: 'מקום שלישי, מפתח גוף לשעבר. מכיר את הדרך.' },
-    { id: 2, title: 'מדעי התזונה', icon: GraduationCap, desc: 'בוגר תואר ראשון. ידע אקדמי מבוסס.' },
-    { id: 3, title: 'מתאים לכולם', icon: Users, desc: 'ממתחילים ועד אתלטים. הגישה היא שקובעת.' },
-    { id: 4, title: 'טכניקה ובריאות', icon: ShieldCheck, desc: 'פדנט בתנועה. חזקים גם מחוץ למכון.' },
-    { id: 5, title: 'משמעת ברזל', icon: Zap, desc: 'בלי איחורים. באים לעבוד.' }
+    { id: 1, title: 'מר ישראל', icon: Trophy, desc: 'מפתח גוף לשעבר, מקום שלישי לשנת 2017.\nמכיר את הדרך.' },
+    { id: 2, title: 'תואר ראשון בתזונה', icon: GraduationCap, desc: 'בוגר תואר ראשון.\nידע אקדמי מבוסס.' },
+    { id: 3, title: 'כושר?', icon: Users, desc: 'רמת הכושר שלכם לא מעניינת אותי.\nהגישה כן.' },
+    { id: 4, title: 'טכניקה', icon: ShieldCheck, desc: 'פדנט בתנועה ובטכניקה.\nחזקים גם מחוץ למכון.' },
+    { id: 5, title: 'משמעת', icon: Zap, desc: 'בלי איחורים.\nלא מתעסק עם זה.' }
 ];
 
 // --- Constants ---
-const ICON_SIZE = 64;
+const ICON_SIZE = 80; // Bigger icons
 const SPACING = 20;
-const ITEM_SIZE = ICON_SIZE + SPACING; // 84
+const ITEM_SIZE = 84; // Keep same spacing (was ICON_SIZE + SPACING when ICON_SIZE was 64)
 const AUTO_PLAY_INTERVAL = 4000;
 
 export default function WhyReelRepCarousel() {
@@ -109,19 +110,30 @@ export default function WhyReelRepCarousel() {
                 Extrapolation.CLAMP
             );
 
+            // Shadow only on active icon - subtle for 3D effect
+            const shadowOpacity = interpolate(
+                scrollX.value,
+                inputRange,
+                [0, 0.1, 0],
+                Extrapolation.CLAMP
+            );
+
             return {
                 transform: [{ scale }],
                 opacity,
+                shadowColor: '#000',
+                shadowOffset: { width: 0, height: 4 },
+                shadowOpacity,
+                shadowRadius: 8,
+                elevation: shadowOpacity > 0.1 ? 8 : 0,
             };
         });
-
-        const isActive = index === activeIndex;
 
         return (
             <View
                 style={{
                     width: ITEM_SIZE,
-                    height: 140, // Scaled back to 140 since title is gone
+                    height: 140,
                     justifyContent: 'center',
                     alignItems: 'center',
                 }}
@@ -134,20 +146,14 @@ export default function WhyReelRepCarousel() {
                             width: ICON_SIZE,
                             height: ICON_SIZE,
                             borderRadius: ICON_SIZE / 2,
-                            backgroundColor: '#2C2C2C',
+                            backgroundColor: '#FFFFFF',
                             justifyContent: 'center',
                             alignItems: 'center',
-                            shadowColor: '#000',
-                            shadowOffset: { width: 0, height: 4 },
-                            shadowOpacity: 0.5,
-                            shadowRadius: 5,
-                            elevation: 10,
-                            // Margin removed
                         }
                     ]}
                 >
                     <item.icon
-                        size={32}
+                        size={42}
                         color="#D81B60"
                         strokeWidth={2}
                     />
@@ -160,11 +166,23 @@ export default function WhyReelRepCarousel() {
 
     return (
         <View
-            className="bg-[#1C1C1C] border border-white/10 rounded-2xl overflow-hidden shadow-lg shadow-black/50 mb-8"
+            style={{
+                borderRadius: 24,
+                overflow: 'hidden',
+                marginBottom: 32,
+                marginTop: 64,
+                backgroundColor: '#FFFFFF',
+                shadowColor: '#000',
+                shadowOffset: { width: 0, height: 4 },
+                shadowOpacity: 0.1,
+                shadowRadius: 12,
+                elevation: 5,
+            }}
             onLayout={(e) => setContainerWidth(e.nativeEvent.layout.width)}
         >
+
             {/* 1. Visual Area (Top) */}
-            <View className="h-60 relative overflow-hidden bg-neutral-900/50 justify-center items-center">
+            <View className="h-60 relative overflow-hidden justify-center items-center">
 
                 {containerWidth > 0 ? (
                     <Animated.FlatList
@@ -193,28 +211,29 @@ export default function WhyReelRepCarousel() {
                 ) : (
                     <View style={{ height: 140 }} />
                 )}
-
-                {/* Fade for bottom text area transition */}
-                <View className="absolute bottom-0 left-0 right-0 h-10 pointer-events-none">
-                    <LinearGradient
-                        colors={['transparent', '#1C1C1C']}
-                        style={{ flex: 1 }}
-                    />
-                </View>
             </View>
 
             {/* 2. Content Area (Bottom - Title & Description) */}
-            <View className="px-8 pb-8 pt-2 items-center h-[120px] justify-center bg-[#1C1C1C]">
+            <View
+                style={{
+                    paddingHorizontal: 32,
+                    paddingBottom: 32,
+                    paddingTop: 8,
+                    height: 120,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                }}
+            >
                 <Animated.View
-                    key={currentFeature.id} // Key change triggers animation
+                    key={currentFeature.id}
                     entering={FadeIn.duration(300)}
                     exiting={FadeOut.duration(200)}
                     className="w-full"
                 >
-                    <Text className="text-white text-2xl font-bold mb-2 text-center writing-direction-rtl">
+                    <Text style={{ fontSize: 34, fontWeight: '900', marginBottom: 8, textAlign: 'center', color: '#1C1C1C' }}>
                         {currentFeature.title}
                     </Text>
-                    <Text className="text-gray-300 text-lg leading-relaxed text-center writing-direction-rtl">
+                    <Text style={{ fontSize: 18, textAlign: 'center', color: '#666666', lineHeight: 26 }}>
                         {currentFeature.desc}
                     </Text>
                 </Animated.View>

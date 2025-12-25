@@ -16,6 +16,7 @@ interface GradientAnimationProps {
     containerStyle?: any;
     theme?: 'pink' | 'blue';
     interactive?: boolean;
+    borderBottomRadius?: number;
 }
 
 interface AnimatedBlobProps {
@@ -117,6 +118,7 @@ export function BackgroundGradientAnimation({
     containerStyle,
     theme = 'pink',
     interactive = false,
+    borderBottomRadius = 0,
 }: GradientAnimationProps) {
     const { width, height } = useWindowDimensions();
     const isDesktop = width >= 1024;
@@ -201,7 +203,15 @@ export function BackgroundGradientAnimation({
         : (isDesktop ? 40 : 20); // Lower on Android for performance
 
     return (
-        <View style={[styles.container, containerStyle]}>
+        <View style={[
+            styles.container,
+            containerStyle,
+            borderBottomRadius > 0 && {
+                borderBottomLeftRadius: borderBottomRadius,
+                borderBottomRightRadius: borderBottomRadius,
+                overflow: 'hidden',
+            }
+        ]}>
             {/* Background Color */}
             <View style={[styles.background, { backgroundColor: '#1C1C1C' }]} />
 

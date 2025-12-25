@@ -15,8 +15,8 @@ import {
   Dimensions,
   NativeScrollEvent,
   NativeSyntheticEvent,
+  Pressable,
   ScrollView,
-  TouchableOpacity,
   ViewStyle,
 } from 'react-native';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
@@ -485,7 +485,7 @@ export function CarouselIndicators({
       ]}
     >
       {Array.from({ length: total }, (_, index) => (
-        <TouchableOpacity
+        <Pressable
           key={index}
           onPress={() => onPress?.(index)}
           style={{
@@ -510,7 +510,7 @@ export function CarouselArrow({
   const primaryColor = useColor('primary');
 
   return (
-    <TouchableOpacity
+    <Pressable
       onPress={onPress}
       disabled={disabled}
       style={[
@@ -523,7 +523,6 @@ export function CarouselArrow({
         },
         style,
       ]}
-      activeOpacity={0.7}
     >
       <BlurView
         tint='systemChromeMaterial' // or "light"/"dark" depending on theme
@@ -541,6 +540,6 @@ export function CarouselArrow({
           <ChevronRight size={20} color={primaryColor} />
         )}
       </BlurView>
-    </TouchableOpacity>
+    </Pressable>
   );
 }

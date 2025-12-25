@@ -1,6 +1,7 @@
+import { useState } from 'react';
 import { View, Text, ScrollView, Pressable, Linking } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
-import { MapPin, Phone, Instagram, Facebook, MessageCircle } from 'lucide-react-native';
+import { MapPin, Phone } from 'lucide-react-native';
 import Navbar from '../components/Navbar';
 // import Hero from '../components/Hero';
 import { AnimatedHero } from '../components/ui/animated-hero';
@@ -10,8 +11,12 @@ import WhyReelRepCarousel from '../components/ui/WhyReelRepCarousel';
 import Testimonials from '../components/Testimonials';
 import Schedule from '../components/Schedule';
 import PricingSection from '../components/PricingSection';
+import LeadFormSheet from '../components/LeadFormSheet';
+import Footer from '../components/Footer';
 
 export default function LandingPage() {
+    const [showLeadForm, setShowLeadForm] = useState(false);
+
     const openWhatsApp = () => {
         Linking.openURL('https://wa.me/972528406273');
     };
@@ -24,7 +29,17 @@ export default function LandingPage() {
 
             <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
                 {/* Shared Animated Gradient Background - Spans Hero + FounderBio */}
-                <View className="flex-shrink-0">
+                <View
+                    style={{
+                        borderBottomLeftRadius: 40,
+                        borderBottomRightRadius: 40,
+                        overflow: 'hidden',
+                        marginBottom: -40,
+                        backgroundColor: '#1C1C1C',
+                        position: 'relative',
+                        zIndex: 1,
+                    }}
+                >
                     <BackgroundGradientAnimation theme="pink">
                         {/* Hero Section */}
                         <AnimatedHero />
@@ -38,118 +53,218 @@ export default function LandingPage() {
                 <View className="relative">
 
                     {/* Method & Benefits */}
-                    <View className="bg-background px-4 md:px-8 lg:px-12 py-20">
+                    <View className="bg-white px-4 md:px-8 lg:px-12 pt-16 pb-20" style={{ borderTopLeftRadius: 40, borderTopRightRadius: 40, marginTop: -40 }}>
                         <View className="max-w-7xl mx-auto w-full">
-                            <Text className="text-white text-3xl md:text-4xl font-bold text-center mb-16 writing-direction-rtl">
-                                למה Reel Rep?
-                            </Text>
-
                             <WhyReelRepCarousel />
                         </View>
                     </View>
 
-                    {/* Expectations Section */}
-                    <View className="bg-backgroundLight px-4 md:px-8 lg:px-12 py-20">
-                        <View className="max-w-4xl mx-auto w-full text-center">
-                            <Text className="text-white text-3xl md:text-4xl font-bold mb-8 writing-direction-rtl">
-                                למי זה מתאים?
-                            </Text>
-
-                            <Text className="text-textGray text-lg leading-relaxed writing-direction-rtl">
-                                אני לא מחפש את הכי חזקים, אני מחפש את הכי רציניים. הדרישה שלי פשוטה: רצון ללמוד, התמדה, והקשבה לטכניקה. מתאים לגברים ונשים מגיל 18+ שרוצים שינוי אמיתי.
-                            </Text>
-                        </View>
+                    {/* Testimonials Section (with rounded top corners) */}
+                    <View
+                        className="bg-background px-4 md:px-8 lg:px-12 py-16"
+                        style={{
+                            borderTopLeftRadius: 40,
+                            borderTopRightRadius: 40,
+                            marginTop: -40,
+                            position: 'relative',
+                            zIndex: 2,
+                        }}
+                    >
+                        {/* Section Title */}
+                        <Text style={{ fontSize: 34, fontWeight: '900', textAlign: 'center', color: 'white', marginBottom: 0 }}>
+                            מתאמנים מספרים
+                        </Text>
+                        <Testimonials />
                     </View>
-
-                    {/* Testimonials */}
-                    <Testimonials />
 
                     {/* Schedule */}
                     <Schedule />
 
-                    {/* Pricing Section */}
-                    <PricingSection />
+                    {/* Pricing Section - wrapped for visible rounded corners */}
+                    <View style={{ backgroundColor: '#FFFFFF' }}>
+                        <PricingSection />
+                    </View>
 
-                    {/* The Offer */}
-                    <View className="bg-background px-4 md:px-8 lg:px-12 py-20">
-                        <View className="max-w-3xl mx-auto w-full">
-                            <View className="bg-backgroundLight border-2 border-pink rounded-2xl p-8 md:p-12">
-                                <Text className="text-white text-3xl md:text-4xl font-bold text-center mb-4 writing-direction-rtl">
-                                    מתחילים בלי תירוצים.
+                    {/* The Offer - White section under pricing */}
+                    <View
+                        style={{
+                            backgroundColor: '#FFFFFF',
+                            paddingTop: 24,
+                            paddingBottom: 100,
+                            paddingHorizontal: 24,
+                            position: 'relative',
+                            overflow: 'hidden',
+                        }}
+                    >
+                        {/* Grid Lines Background */}
+                        <View
+                            style={{
+                                position: 'absolute',
+                                top: 0,
+                                left: 0,
+                                right: 0,
+                                bottom: 0,
+                                opacity: 0.05,
+                            }}
+                        >
+                            {/* Horizontal Lines */}
+                            {[...Array(20)].map((_, i) => (
+                                <View
+                                    key={`h-${i}`}
+                                    style={{
+                                        position: 'absolute',
+                                        top: i * 40,
+                                        left: 0,
+                                        right: 0,
+                                        height: 1,
+                                        backgroundColor: '#000000',
+                                    }}
+                                />
+                            ))}
+                            {/* Vertical Lines */}
+                            {[...Array(12)].map((_, i) => (
+                                <View
+                                    key={`v-${i}`}
+                                    style={{
+                                        position: 'absolute',
+                                        left: i * 40,
+                                        top: 0,
+                                        bottom: 0,
+                                        width: 1,
+                                        backgroundColor: '#000000',
+                                    }}
+                                />
+                            ))}
+                        </View>
+                        <View className="max-w-lg mx-auto w-full">
+                            {/* Offer Badge */}
+                            <View className="items-center mb-6">
+                                <View className="bg-pink px-5 py-2 rounded-full">
+                                    <Text className="text-white text-sm font-bold">הצעה מיוחדת לחדשים</Text>
+                                </View>
+                            </View>
+
+                            {/* Offer Card */}
+                            <View
+                                style={{
+                                    backgroundColor: '#FFFFFF',
+                                    borderRadius: 24,
+                                    padding: 32,
+                                    alignItems: 'center',
+                                    shadowColor: '#000',
+                                    shadowOffset: { width: 0, height: 4 },
+                                    shadowOpacity: 0.15,
+                                    shadowRadius: 12,
+                                    elevation: 8,
+                                }}
+                            >
+                                <Text
+                                    style={{
+                                        fontSize: 56,
+                                        fontWeight: '900',
+                                        color: '#1C1C1C',
+                                        marginBottom: 4,
+                                    }}
+                                >
+                                    ₪99
                                 </Text>
-
-                                <Text className="text-pink text-2xl font-bold text-center mb-2 writing-direction-rtl">
-                                    כרטיסיית היכרות – 3 אימונים מלאים
+                                <Text
+                                    style={{
+                                        fontSize: 22,
+                                        fontWeight: '700',
+                                        color: '#D81B60',
+                                        marginBottom: 12,
+                                    }}
+                                >
+                                    ל-3 אימונים
                                 </Text>
-
-                                <Text className="text-white text-5xl font-bold text-center mb-8">
-                                    99 ₪ בלבד
+                                <Text
+                                    style={{
+                                        fontSize: 14,
+                                        color: '#6B7280',
+                                        textAlign: 'center',
+                                        marginBottom: 24,
+                                    }}
+                                >
+                                    הצעת היכרות למתאמנים חדשים בלבד
                                 </Text>
 
                                 <Pressable
-                                    onPress={openWhatsApp}
-                                    className="bg-pink px-8 py-5 rounded-xl active:opacity-80 shadow-xl"
+                                    onPress={() => setShowLeadForm(true)}
+                                    className="bg-[#1C1C1C] px-8 py-4 rounded-xl active:opacity-80 w-full"
                                 >
-                                    <Text className="text-white text-xl font-bold text-center">
-                                        שריינו לי מקום עכשיו
+                                    <Text className="text-white text-lg font-bold text-center">
+                                        אני רוצה!
                                     </Text>
                                 </Pressable>
+
+                                {/* Disclaimers */}
+                                <View className="mt-4 pt-4 border-t border-gray-200">
+                                    <Text
+                                        className="text-gray-500 text-xs text-center"
+                                        style={{ writingDirection: 'rtl' }}
+                                    >
+                                        * תקף לשבועיים
+                                    </Text>
+                                    <Text
+                                        className="text-gray-500 text-xs text-center mt-1"
+                                        style={{ writingDirection: 'rtl' }}
+                                    >
+                                        * אין החזרים על כרטיסיות
+                                    </Text>
+                                </View>
                             </View>
+                        </View>
+                    </View>
+
+                    {/* New Section - Dark layer above footer */}
+                    <View
+                        style={{
+                            backgroundColor: '#1C1C1C',
+                            borderTopLeftRadius: 40,
+                            borderTopRightRadius: 40,
+                            marginTop: -40,
+                            paddingTop: 60,
+                            paddingBottom: 60,
+                            paddingHorizontal: 24,
+                            position: 'relative',
+                            zIndex: 12,
+                        }}
+                    >
+                        <View className="max-w-lg mx-auto w-full items-center">
+                            <Text
+                                className="text-white text-2xl font-bold text-center mb-4"
+                                style={{ writingDirection: 'rtl' }}
+                            >
+                                מוכנים להתחיל?
+                            </Text>
+                            <Text
+                                className="text-gray-400 text-base text-center mb-8"
+                                style={{ writingDirection: 'rtl' }}
+                            >
+                                השאירו פרטים ונחזור אליכם בהקדם
+                            </Text>
+                            <Pressable
+                                onPress={() => setShowLeadForm(true)}
+                                className="bg-[#D81B60] h-14 px-10 rounded-full items-center justify-center active:opacity-80"
+                            >
+                                <Text className="text-white text-lg font-bold">
+                                    השאירו פרטים
+                                </Text>
+                            </Pressable>
                         </View>
                     </View>
 
                     {/* Footer */}
-                    <View className="bg-backgroundLight px-4 md:px-8 lg:px-12 py-12 border-t border-pink/20">
-                        <View className="max-w-7xl mx-auto w-full">
-                            {/* Logo */}
-                            <View className="items-center mb-6">
-                                <View className="bg-white/10 px-5 py-2 rounded-lg">
-                                    <Text className="text-white text-xl font-bold">RR</Text>
-                                </View>
-                            </View>
-
-                            {/* Contact Info */}
-                            <View className="items-center space-y-3 mb-8">
-                                <View className="flex-row items-center gap-2">
-                                    <MapPin size={18} color="#D81B60" />
-                                    <Text className="text-textGray writing-direction-rtl">
-                                        אריה דיסנצ׳יק 7, תל אביב
-                                    </Text>
-                                </View>
-
-                                <View className="flex-row items-center gap-2">
-                                    <Phone size={18} color="#D81B60" />
-                                    <Text className="text-textGray">
-                                        052-840-6273 (איוון)
-                                    </Text>
-                                </View>
-                            </View>
-
-                            {/* Social Links */}
-                            <View className="flex-row justify-center gap-6">
-                                <Pressable className="bg-pink/10 p-3 rounded-full active:opacity-80">
-                                    <Instagram size={24} color="#D81B60" />
-                                </Pressable>
-
-                                <Pressable className="bg-pink/10 p-3 rounded-full active:opacity-80">
-                                    <Facebook size={24} color="#D81B60" />
-                                </Pressable>
-
-                                <Pressable
-                                    onPress={openWhatsApp}
-                                    className="bg-pink/10 p-3 rounded-full active:opacity-80"
-                                >
-                                    <MessageCircle size={24} stroke="#D81B60" />
-                                </Pressable>
-                            </View>
-
-                            <Text className="text-textGray/50 text-sm text-center mt-8">
-                                © 2024 Reel Rep.Training. All rights reserved.
-                            </Text>
-                        </View>
-                    </View>
+                    <Footer />
                 </View>
-            </ScrollView>
-        </View>
+            </ScrollView >
+
+            {/* Lead Form Bottom Sheet */}
+            <LeadFormSheet
+                visible={showLeadForm}
+                onClose={() => setShowLeadForm(false)}
+            />
+        </View >
     );
 }

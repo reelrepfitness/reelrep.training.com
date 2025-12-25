@@ -73,17 +73,20 @@ export function HeroTextRotate({
     const staticTextStyle = {
         fontFamily,
         fontWeight: '900' as const,
-        letterSpacing: isDesktop ? -5 : -2,
-        fontSize: isDesktop ? 96 : 150, // Increased mobile size to 150
+        letterSpacing: isDesktop ? -12 : -6, // Even tighter letter spacing
+        fontSize: isDesktop ? 96 : 150,
         lineHeight: isDesktop ? 110 : 110,
-        textAlign: isDesktop ? 'center' : 'left', // Align left on mobile
+        textAlign: isDesktop ? 'center' : 'left',
+        textShadowColor: 'transparent', // Remove any shadow
+        textShadowOffset: { width: 0, height: 0 },
+        textShadowRadius: 0,
     } as const;
 
-    // Animated suffix style
+    // Animated suffix style - keep original spacing
     const animatedTextStyle = {
         fontFamily,
         fontWeight: '900' as const,
-        letterSpacing: isDesktop ? -5 : -2,
+        letterSpacing: isDesktop ? -5 : -2, // Original spacing for animated suffix
         fontSize: isDesktop ? 96 : 48,
         lineHeight: isDesktop ? 110 : 60,
     };
@@ -118,7 +121,7 @@ export function HeroTextRotate({
                         </Text>
                         <Text
                             className="text-white font-bold text-left"
-                            style={{ ...staticTextStyle, lineHeight: 130 }}
+                            style={{ ...staticTextStyle, lineHeight: 130, paddingBottom: 10 }}
                         >
                             rep
                         </Text>

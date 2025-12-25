@@ -1,5 +1,8 @@
-import React from 'react';
-import { View, Text } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, Pressable } from 'react-native';
+import { ChevronDown } from 'lucide-react-native';
+import Animated, { useSharedValue, useAnimatedStyle, withTiming } from 'react-native-reanimated';
+import ClubInfoCards from '@/components/ui/club-info-cards';
 import AnimatedTabs from '@/components/ui/animated-tabs';
 
 const WEEKLY_SCHEDULE = [
@@ -76,14 +79,58 @@ const WEEKLY_SCHEDULE = [
 ];
 
 export default function Schedule() {
-    return (
-        <View className="bg-background px-4 md:px-8 lg:px-12 py-20">
-            <View className="max-w-6xl mx-auto w-full">
-                <Text className="text-white text-3xl md:text-4xl font-bold text-center mb-12 writing-direction-rtl">
-                    לוח אימונים
-                </Text>
+    const [isExpanded, setIsExpanded] = useState(false);
+    const rotation = useSharedValue(0);
 
-                <AnimatedTabs days={WEEKLY_SCHEDULE} />
+    const toggleAccordion = () => {
+        setIsExpanded(!isExpanded);
+        rotation.value = withTiming(isExpanded ? 0 : 180, { duration: 300 });
+    };
+
+    const chevronStyle = useAnimatedStyle(() => ({
+        transform: [{ rotate: `${rotation.value}deg` }],
+    }));
+
+    return (
+        <View
+            className="w-full bg-white"
+            style={{
+                paddingTop: 80,
+                paddingBottom: 80,
+                paddingHorizontal: 20,
+                borderTopLeftRadius: 40,
+                borderTopRightRadius: 40,
+            }}
+        >
+            <View className="max-w-6xl mx-auto w-full">
+                {/* The Club Section - Static Cards */}
+                <ClubInfoCards />
+
+                {/* Schedule Section - Accordion */}
+                <View className="mt-12">
+                    {/* Accordion Header */}
+                    <Pressable
+                        onPress={toggleAccordion}
+                        className="items-center active:opacity-70"
+                    >
+                        <Text style={{ fontSize: 34, fontWeight: '900', textAlign: 'center', color: '#1C1C1C' }}>
+                            לוח אימונים
+                        </Text>
+                        <Text
+                            className="text-[#D81B60] text-base mt-2"
+                            style={{ writingDirection: 'rtl' }}
+                        >
+                            {isExpanded ? 'לסגירה לחצו כאן' : 'לצפייה לחצו כאן'}
+                        </Text>
+                    </Pressable>
+
+                    {/* Accordion Content */}
+                    {isExpanded && (
+                        <View className="mt-8">
+                            <AnimatedTabs days={WEEKLY_SCHEDULE} />
+                        </View>
+                    )}
+                </View>
             </View>
         </View>
     );

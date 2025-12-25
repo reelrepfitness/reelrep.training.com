@@ -39,9 +39,8 @@ const CARDS = [
         id: 3,
         title: "למי זה מתאים?",
         content: "אם אתם רוצים להיראות טוב בסלפי - לא חסר חדרי כושר בעיר.",
-        highlight: "גוף שעובד בשבילכם ולא בוגד בכם בשום גיל",
-        highlightPrefix: "אם אתם רוצים ",
-        highlightSuffix: " - אתם במקום הנכון.",
+        highlight: "אתם במקום הנכון.",
+        highlightPrefix: "אם אתם רוצים גוף שעובד בשבילכם ולא בוגד בכם",
     },
 ];
 
@@ -131,24 +130,39 @@ export default function StoryCardStack() {
 
         const cardContent = (
             <>
-                {/* Card Title - BIG */}
-                <Text className="text-pink font-black text-3xl md:text-4xl text-right mb-3 writing-direction-rtl">
+                {/* Card Title - BIG, stretched across, single line */}
+                <Text
+                    numberOfLines={1}
+                    adjustsFontSizeToFit
+                    className="text-pink font-black text-4xl md:text-5xl text-right mb-2 writing-direction-rtl"
+                >
                     {card.title}
                 </Text>
 
                 {/* Card Content */}
-                <Text className="text-gray-200 text-base md:text-lg leading-relaxed text-right writing-direction-rtl mb-4">
+                <Text className="text-gray-200 text-lg leading-relaxed text-right writing-direction-rtl mb-4">
                     {card.content}
                 </Text>
 
                 {/* Highlighted Quote */}
                 {card.highlight && (
-                    <View className="bg-background/50 rounded-lg p-3 mt-auto">
-                        <Text className="text-white text-lg md:text-xl font-medium text-right writing-direction-rtl">
-                            {card.highlightPrefix}
-                            <Text className="text-pink font-bold">{card.highlight}</Text>
-                            {card.highlightSuffix || ''}
-                        </Text>
+                    <View className="mt-auto">
+                        {/* Small divider */}
+                        <View style={{ width: 40, height: 2, backgroundColor: 'rgba(255, 255, 255, 0.15)', alignSelf: 'center', marginBottom: 8, borderRadius: 1 }} />
+
+                        {/* Prefix text - centered above the badge */}
+                        {card.highlightPrefix && (
+                            <Text className="text-white text-base md:text-lg font-medium text-center writing-direction-rtl" style={{ marginBottom: 4 }}>
+                                {card.highlightPrefix}
+                            </Text>
+                        )}
+
+                        {/* Badge with highlight text */}
+                        <View className="bg-background/50 rounded-lg p-3">
+                            <Text className="text-pink text-lg md:text-xl font-bold text-center writing-direction-rtl">
+                                {card.highlight}
+                            </Text>
+                        </View>
                     </View>
                 )}
             </>

@@ -1,12 +1,14 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, Image, Pressable, Linking, useWindowDimensions } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import { Instagram, MessageCircle } from 'lucide-react-native';
+import { Instagram, MessageCircle, Facebook } from 'lucide-react-native';
+import { Video, ResizeMode } from 'expo-av';
 import Animated, {
     useSharedValue,
     useAnimatedStyle,
     withRepeat,
     withTiming,
+    withDelay,
     Easing,
 } from 'react-native-reanimated';
 import StoryCardStack from './ui/story-card-stack';
@@ -29,6 +31,9 @@ export default function FounderBio({
     const blobScale = useSharedValue(1);
     const blobOpacity = useSharedValue(0.15);
 
+    // Image-to-video fade animation
+    const imageOpacity = useSharedValue(1);
+
     useEffect(() => {
         blobScale.value = withRepeat(
             withTiming(1.2, { duration: 4000, easing: Easing.inOut(Easing.ease) }),
@@ -40,11 +45,21 @@ export default function FounderBio({
             -1,
             true
         );
+
+        // Fade out image after 5 seconds (1000ms fade duration)
+        imageOpacity.value = withDelay(
+            5000,
+            withTiming(0, { duration: 1000, easing: Easing.inOut(Easing.ease) })
+        );
     }, []);
 
     const blobAnimatedStyle = useAnimatedStyle(() => ({
         transform: [{ scale: blobScale.value }],
         opacity: blobOpacity.value,
+    }));
+
+    const imageAnimatedStyle = useAnimatedStyle(() => ({
+        opacity: imageOpacity.value,
     }));
 
     // Avatar size
@@ -61,85 +76,98 @@ export default function FounderBio({
 
     // Instagram handler
     const openInstagram = () => {
-        Linking.openURL('https://instagram.com/reelrep.training'); // Replace with actual handle
+        Linking.openURL('https://www.instagram.com/ivan_zaits?igsh=bzc5b3oycDl5a2E1&utm_source=qr');
     };
 
     return (
         <View className="px-4 md:px-8 lg:px-12 py-12 md:py-16 lg:py-20">
             <View className="max-w-6xl mx-auto w-full">
-                {/* Main Container - RTL Flex Row Reverse on Tablet+ */}
-                <View className="flex-col md:flex-row-reverse gap-8 md:gap-12 lg:gap-16 items-center">
 
-                    {/* Avatar Area - Right side on tablet+ */}
-                    <View className="w-full md:w-2/5 items-center md:items-end relative">
-                        {/* Animated Gradient Blob Background */}
-                        <Animated.View
-                            style={[
-                                blobAnimatedStyle,
-                                {
-                                    position: 'absolute',
-                                    width: avatarSize * 1.5,
-                                    height: avatarSize * 1.5,
-                                    borderRadius: (avatarSize * 1.5) / 2,
-                                },
-                            ]}
-                        >
-                            <LinearGradient
-                                colors={['#D81B60', '#E91E63', '#FF5722']}
-                                start={{ x: 0, y: 0 }}
-                                end={{ x: 1, y: 1 }}
-                                style={{
-                                    width: '100%',
-                                    height: '100%',
-                                    borderRadius: (avatarSize * 1.5) / 2,
-                                }}
-                            />
-                        </Animated.View>
-
-                        {/* Avatar Image */}
+                {/* Hero Header - Avatar with Overlapping Label Card */}
+                <View className="mb-8 md:mb-12">
+                    <View
+                        style={{
+                            position: 'relative',
+                            width: '100%',
+                            height: isMobile ? 550 : isTablet ? 580 : 620,
+                            overflow: 'visible', // Prevent clipping
+                        }}
+                    >
+                        {/* Rectangle Avatar - Right side with 4:5 ratio */}
                         <View
                             style={{
-                                width: avatarSize,
-                                height: avatarSize,
-                                borderRadius: avatarSize / 2,
-                                borderWidth: 4,
-                                borderColor: '#2C2C2C',
+                                position: 'absolute',
+                                right: 0,
+                                top: 0,
+                                width: isMobile ? '90%' : '70%',
+                                height: '100%',
+                                borderRadius: 20,
                                 overflow: 'hidden',
                                 shadowColor: '#000',
                                 shadowOffset: { width: 0, height: 8 },
                                 shadowOpacity: 0.4,
-                                shadowRadius: 12,
+                                shadowRadius: 16,
                                 elevation: 10,
                             }}
                         >
-                            <Image
+                            {/* Video plays underneath */}
+                            <Video
+                                source={require('../assets/images/2805ACE0-F616-4E7A-8E01-FE0604B4B9B0.mov')}
+                                style={{
+                                    position: 'absolute',
+                                    width: '100%',
+                                    height: '100%',
+                                }}
+                                resizeMode={ResizeMode.COVER}
+                                shouldPlay
+                                isLooping
+                                isMuted
+                            />
+
+                            {/* Image fades out after 5 seconds */}
+                            <Animated.Image
                                 source={
                                     avatarUrl
                                         ? { uri: avatarUrl }
                                         : require('../assets/Trainer_Photo.png')
                                 }
-                                style={{
-                                    width: '100%',
-                                    height: '100%',
-                                }}
+                                style={[
+                                    {
+                                        position: 'absolute',
+                                        width: '100%',
+                                        height: '100%',
+                                    },
+                                    imageAnimatedStyle,
+                                ]}
                                 resizeMode="cover"
                             />
                         </View>
-                    </View>
 
-                    {/* Text Content Area - Left side on tablet+ */}
-                    <View className="w-full md:w-3/5">
-                        {/* Header */}
-                        <Text className="text-white text-3xl md:text-4xl lg:text-5xl font-bold text-center md:text-right mb-2 writing-direction-rtl">
-                            נעים מאוד, איוון.
-                        </Text>
-
-                        <Text className="text-pink text-lg md:text-xl font-medium text-center md:text-right mb-6 writing-direction-rtl">
-                            בעלים ומאמן ראשי
-                        </Text>
-
-                        {/* Credentials Bullets */}
-                        <View className="bg-backgroundLight rounded-xl p-6 mb-6">
+                        {/* Credentials Card - With name title */}
+                        <View
+                            style={{
+                                position: 'absolute',
+                                left: 0,
+                                bottom: isMobile ? -20 : 0,
+                                backgroundColor: '#FFFFFF',
+                                borderRadius: 16,
+                                padding: isMobile ? 16 : 24,
+                                shadowColor: '#000',
+                                shadowOffset: { width: 0, height: 8 },
+                                shadowOpacity: 0.3,
+                                shadowRadius: 20,
+                                elevation: 15,
+                                width: isMobile ? '70%' : '50%',
+                                zIndex: 10,
+                            }}
+                        >
+                            {/* Name Title */}
+                            <Text className="text-background text-2xl md:text-3xl lg:text-4xl font-bold text-right writing-direction-rtl mb-1">
+                                נעים מאוד, איוון.
+                            </Text>
+                            <Text className="text-pink text-base md:text-lg lg:text-xl font-medium text-right writing-direction-rtl mb-4">
+                                בעלים ומאמן ראשי
+                            </Text>
                             {[
                                 'בוגר תואר ראשון למדעי התזונה',
                                 'מקום שלישי ב״מר ישראל 2017״',
@@ -147,47 +175,74 @@ export default function FounderBio({
                             ].map((credential, idx) => (
                                 <View
                                     key={idx}
-                                    className="flex-row-reverse items-center gap-3 mb-3 last:mb-0"
+                                    className="flex-row-reverse items-center gap-3 mb-2 last:mb-0"
                                 >
                                     <View
                                         style={{
-                                            width: 8,
-                                            height: 8,
-                                            borderRadius: 4,
+                                            width: 6,
+                                            height: 6,
+                                            borderRadius: 3,
                                             backgroundColor: '#D81B60',
                                         }}
                                     />
-                                    <Text className="text-textGray text-base md:text-lg flex-1 text-right writing-direction-rtl">
+                                    <Text style={{ color: '#444444', fontSize: isMobile ? 13 : 15, textAlign: 'right', flex: 1 }}>
                                         {credential}
                                     </Text>
                                 </View>
                             ))}
                         </View>
+                    </View>
+                </View>
 
-                        {/* The Story - Animated Card Stack */}
-                        <StoryCardStack />
+                {/* Content Section */}
+                <View className="w-full">
 
-                        {/* Social/Contact Buttons */}
-                        <View className="flex-row-reverse gap-4 mt-8">
-                            {/* WhatsApp - Primary */}
-                            <Pressable
-                                onPress={openWhatsApp}
-                                className="flex-1 bg-pink px-6 py-4 rounded-xl flex-row-reverse items-center justify-center gap-3 active:opacity-80"
-                            >
-                                <MessageCircle size={20} color="#FFFFFF" />
-                                <Text className="text-white text-base md:text-lg font-bold">
-                                    שלחו הודעה
-                                </Text>
-                            </Pressable>
+                    {/* The Story - Animated Card Stack */}
+                    <StoryCardStack />
 
-                            {/* Instagram - Secondary */}
-                            <Pressable
-                                onPress={openInstagram}
-                                className="bg-backgroundLight px-6 py-4 rounded-xl flex-row-reverse items-center justify-center gap-3 active:opacity-80"
-                            >
-                                <Instagram size={20} color="#D81B60" />
-                            </Pressable>
-                        </View>
+                    {/* Social Buttons - Instagram, Facebook, WhatsApp */}
+                    <View className="flex-row-reverse gap-4 mt-8 justify-center">
+                        {/* Instagram - Gradient Pink/Purple */}
+                        <Pressable
+                            onPress={openInstagram}
+                            style={{
+                                backgroundColor: '#E1306C', // Instagram pink
+                                paddingHorizontal: 24,
+                                paddingVertical: 16,
+                                borderRadius: 12,
+                            }}
+                            className="active:opacity-80"
+                        >
+                            <Instagram size={24} color="#FFFFFF" />
+                        </Pressable>
+
+                        {/* Facebook - Blue */}
+                        <Pressable
+                            onPress={() => Linking.openURL('https://www.facebook.com/share/1WJYDzcV95/?mibextid=wwXIfr')}
+                            style={{
+                                backgroundColor: '#1877F2', // Facebook blue
+                                paddingHorizontal: 24,
+                                paddingVertical: 16,
+                                borderRadius: 12,
+                            }}
+                            className="active:opacity-80"
+                        >
+                            <Facebook size={24} color="#FFFFFF" />
+                        </Pressable>
+
+                        {/* WhatsApp - Green */}
+                        <Pressable
+                            onPress={openWhatsApp}
+                            style={{
+                                backgroundColor: '#25D366', // WhatsApp green
+                                paddingHorizontal: 24,
+                                paddingVertical: 16,
+                                borderRadius: 12,
+                            }}
+                            className="active:opacity-80"
+                        >
+                            <MessageCircle size={24} color="#FFFFFF" />
+                        </Pressable>
                     </View>
                 </View>
             </View>

@@ -14,10 +14,10 @@ import {
 } from 'lucide-react-native';
 import React, { useMemo, useState } from 'react';
 import {
+  Pressable,
   ScrollView,
   TextInput,
   TextStyle,
-  TouchableOpacity,
   ViewStyle,
 } from 'react-native';
 
@@ -241,7 +241,7 @@ export function Table<T = any>({
       ]}
     >
       {columns.map((column) => (
-        <TouchableOpacity
+        <Pressable
           key={column.id}
           style={{
             flex: column.width ? 0 : 1,
@@ -277,7 +277,7 @@ export function Table<T = any>({
               {renderSortIcon(column.id)}
             </>
           )}
-        </TouchableOpacity>
+        </Pressable>
       ))}
     </View>
   );
@@ -286,7 +286,7 @@ export function Table<T = any>({
     const dynamicRowStyle =
       typeof rowStyle === 'function' ? rowStyle(row, index) : rowStyle;
     return (
-      <TouchableOpacity
+      <Pressable
         key={index}
         style={[
           {
@@ -299,10 +299,9 @@ export function Table<T = any>({
         ]}
         onPress={() => onRowPress?.(row, index)}
         disabled={!onRowPress}
-        activeOpacity={onRowPress ? 0.7 : 1}
       >
         {columns.map((column) => renderCell(column, row, index))}
-      </TouchableOpacity>
+      </Pressable>
     );
   };
 
